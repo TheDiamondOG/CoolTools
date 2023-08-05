@@ -17,6 +17,13 @@ def download_youtube(url, output_path, audio_only=False):
     try:
         if "playlist" in url.lower():
             playlist = Playlist(url)
+            playlist_name = playlist.title()
+
+            # Create a folder with the playlist name
+            output_path = os.path.join(output_path, playlist_name)
+            if not os.path.exists(output_path):
+                os.makedirs(output_path)
+
             playlist._video_regex = r"\"url\":\"(/watch\?v=[\w-]*)"
             for video_url in playlist.video_urls:
                 download_youtube(video_url, output_path, audio_only)
