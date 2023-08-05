@@ -2,7 +2,7 @@
 Cool stuff with python
 
 # Download Info
-You will need ffmpeg to use this
+You will need ffmpeg, and Python 3.11 to use this
 
 The installer will only install the python libraries
 
