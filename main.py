@@ -3,6 +3,14 @@ import os
 from pytube import YouTube, Playlist
 import ffmpeg
 import shlex
+import logging
+
+# Configure logging to log everything
+logging.basicConfig(
+    filename="multitool.log",
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def download_youtube(url, output_path, audio_only=False):
@@ -24,9 +32,10 @@ def download_youtube(url, output_path, audio_only=False):
             else:
                 video_stream = yt.streams.filter(file_extension="mp4", progressive=True).first()
                 video_stream.download(output_path=output_path)
+        logging.info(f"Downloaded: {url}")
         return True
     except Exception as e:
-        print(f"Error downloading video/playlist: {e}")
+        logging.error(f"Error downloading video/playlist: {e}")
         return False
 
 
@@ -43,8 +52,10 @@ def convert(input_path, output_format="mp4"):
         output_file_quoted = shlex.quote(output_file)
 
         ffmpeg.input(input_path_quoted).output(output_file_quoted).run()
+        logging.info(f"Converted: {input_path} to {output_format}")
         print(f"File converted successfully! You can download it here: {output_file}")
     except Exception as e:
+        logging.error(f"An error occurred during conversion: {e}")
         print(f"An error occurred: {e}")
 
 
